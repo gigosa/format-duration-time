@@ -1,0 +1,17 @@
+{
+  "name": "format-duration-time",
+  "version": "0.1.0",
+  "description": "Format duration to time",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest"
+  },
+  "author": "gigosa",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^24.1.0",
+    "typescript": "^3.3.3333"
+  }
+}
