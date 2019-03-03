@@ -1,6 +1,6 @@
 {
   "name": "format-duration-time",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Format duration to time",
   "main": "index.js",
   "scripts": {
@@ -13,5 +13,14 @@
   "devDependencies": {
     "jest": "^24.1.0",
     "typescript": "^3.3.3333"
+  },
+  "keywords": [
+    "duration",
+    "time",
+    "format"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gigosa/format-duration-time"
   }
 }
