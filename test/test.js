@@ -21,6 +21,11 @@ test('m must return 0 if input is less than 1 minute', () => {
 })
 
 test('mm must return padded minute', () => {
-  const duration = new Duration(60);
-  expect(duration.format('mm')).toBe('01');
+  const duration = new Duration(6000);
+  expect(duration.format('mm')).toBe('100');
+})
+
+test('h:mm must return formated hour and minute', () => {
+  const duration = new Duration(9000);
+  expect(duration.format('h:mm')).toBe('2:30');
 })

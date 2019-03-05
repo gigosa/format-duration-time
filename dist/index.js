@@ -3,24 +3,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Duration = /** @class */ (function () {
     function Duration(duration, unit) {
         if (unit === void 0) { unit = 's'; }
+        var _this = this;
         this.duration = duration;
         this.unit = unit;
+        this.hour = 0;
+        this.minute = 0;
+        this.second = 0;
+        this.getHour = function (duration) {
+            _this.hour = Math.floor(duration / 3600000);
+            return _this.hour;
+        };
+        this.getMinute = function (duration) {
+            _this.minute = Math.floor((duration - _this.hour * 3600000) / 60000);
+            return _this.minute;
+        };
+        this.getSecond = function (duration) {
+            _this.second = Math.floor((duration - _this.hour * 3600000
+                - _this.minute * 60000) / 1000);
+            return _this.second;
+        };
         this.formatTokenFunctions = {};
         this.formatFunctions = {};
         this.millisecond = Duration.convertToMillisecond(duration, unit);
-        this.addFormatToken('h', 0, Duration.getHour);
-        this.addFormatToken('m', 0, Duration.getMinute);
-        this.addFormatToken('mm', 2, Duration.getMinute);
+        this.addFormatToken('s', 0, this.getSecond);
+        this.addFormatToken('h', 0, this.getHour);
+        this.addFormatToken('m', 0, this.getMinute);
+        this.addFormatToken('mm', 2, this.getMinute);
     }
     Duration.convertToMillisecond = function (value, type) {
         var millisecondValue = Duration.INPUT_TYPES.filter(function (v) { return v.type === type; })[0].millisecondValue;
         return value * millisecondValue;
-    };
-    Duration.getHour = function (duration) {
-        return Math.floor(duration / 3600000);
-    };
-    Duration.getMinute = function (duration) {
-        return Math.floor(duration % 3600000 / 60000);
     };
     Duration.zeroPad = function (value, length) {
         var s = String(value);

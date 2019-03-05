@@ -8,15 +8,19 @@ export default class Duration {
   ];
   private formatTokenFunctions: {[key: string]: Function};
   private formatFunctions: {[key: string]: Function};
+  private hour: number = 0;
+  private minute: number = 0;
+  private second: number = 0;
   private millisecond: number;
 
   constructor(private duration: number, private unit: string = 's') {
     this.formatTokenFunctions = {};
     this.formatFunctions = {};
     this.millisecond = Duration.convertToMillisecond(duration, unit);
-    this.addFormatToken('h', 0, Duration.getHour);
-    this.addFormatToken('m', 0, Duration.getMinute);
-    this.addFormatToken('mm', 2, Duration.getMinute);
+    this.addFormatToken('s', 0, this.getSecond);
+    this.addFormatToken('h', 0, this.getHour);
+    this.addFormatToken('m', 0, this.getMinute);
+    this.addFormatToken('mm', 2, this.getMinute);
   }
 
   private static convertToMillisecond(value: number, type: string): number {
@@ -24,12 +28,20 @@ export default class Duration {
     return value * millisecondValue;
   }
 
-  private static getHour(duration: number): number {
-    return Math.floor(duration / 3600000);
+  public getHour = (duration: number): number => {
+    this.hour = Math.floor(duration / 3600000);
+    return this.hour;
   }
 
-  private static getMinute(duration: number): number {
-    return Math.floor(duration % 3600000 / 60000);
+  private getMinute = (duration: number): number => {
+    this.minute = Math.floor((duration - this.hour * 3600000) / 60000);
+    return this.minute;
+  }
+
+  private getSecond = (duration: number): number => {
+    this.second = Math.floor((duration - this.hour * 3600000
+      - this.minute * 60000) / 1000);
+    return this.second;
   }
 
   private static zeroPad(value: number, length: number): string{
