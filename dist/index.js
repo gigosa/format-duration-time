@@ -7,15 +7,20 @@ var Duration = /** @class */ (function () {
         this.unit = unit;
         this.formatTokenFunctions = {};
         this.formatFunctions = {};
+        this.millisecond = Duration.convertToMillisecond(duration, unit);
         this.addFormatToken('h', 0, Duration.getHour);
         this.addFormatToken('m', 0, Duration.getMinute);
         this.addFormatToken('mm', 2, Duration.getMinute);
     }
+    Duration.convertToMillisecond = function (value, type) {
+        var millisecondValue = Duration.INPUT_TYPES.filter(function (v) { return v.type === type; })[0].millisecondValue;
+        return value * millisecondValue;
+    };
     Duration.getHour = function (duration) {
-        return Math.floor(duration / 3600);
+        return Math.floor(duration / 3600000);
     };
     Duration.getMinute = function (duration) {
-        return Math.floor(duration % 3600 / 60);
+        return Math.floor(duration % 3600000 / 60000);
     };
     Duration.zeroPad = function (value, length) {
         var s = String(value);
@@ -60,9 +65,15 @@ var Duration = /** @class */ (function () {
     Duration.prototype.format = function (format) {
         // TODO: 0になった桁を表示するかしないかのオプションを受け取れるようにする
         this.formatFunctions[format] = this.makeFormatFunction(format);
-        return this.formatFunctions[format](this.duration);
+        return this.formatFunctions[format](this.millisecond);
     };
     Duration.FORMAT_TOKENS = /\*?[Hh]|\*?m+|\*?s+|./g;
+    Duration.INPUT_TYPES = [
+        {
+            type: 's',
+            millisecondValue: 1000
+        }
+    ];
     return Duration;
 }());
 exports.default = Duration;

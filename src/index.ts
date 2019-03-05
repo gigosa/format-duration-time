@@ -1,22 +1,35 @@
 export default class Duration {
   static readonly FORMAT_TOKENS: RegExp = /\*?[Hh]|\*?m+|\*?s+|./g;
+  static readonly INPUT_TYPES = [
+    {
+      type: 's',
+      millisecondValue: 1000
+    }
+  ];
   private formatTokenFunctions: {[key: string]: Function};
   private formatFunctions: {[key: string]: Function};
+  private millisecond: number;
 
   constructor(private duration: number, private unit: string = 's') {
     this.formatTokenFunctions = {};
     this.formatFunctions = {};
+    this.millisecond = Duration.convertToMillisecond(duration, unit);
     this.addFormatToken('h', 0, Duration.getHour);
     this.addFormatToken('m', 0, Duration.getMinute);
     this.addFormatToken('mm', 2, Duration.getMinute);
   }
 
+  private static convertToMillisecond(value: number, type: string): number {
+    let millisecondValue = Duration.INPUT_TYPES.filter(v => v.type === type)[0].millisecondValue;
+    return value * millisecondValue;
+  }
+
   private static getHour(duration: number): number {
-    return Math.floor(duration / 3600);
+    return Math.floor(duration / 3600000);
   }
 
   private static getMinute(duration: number): number {
-    return Math.floor(duration % 3600 / 60);
+    return Math.floor(duration % 3600000 / 60000);
   }
 
   private static zeroPad(value: number, length: number): string{
@@ -58,6 +71,6 @@ export default class Duration {
   public format(format: string): string {
     // TODO: 0になった桁を表示するかしないかのオプションを受け取れるようにする
     this.formatFunctions[format] = this.makeFormatFunction(format);
-    return this.formatFunctions[format](this.duration);
+    return this.formatFunctions[format](this.millisecond);
   }
 }
