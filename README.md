@@ -6,8 +6,11 @@ Format duration to time
 ```
 const Duration = require('path/to/format-duration-time').default;
 
-const minute = new Duration(360);
-minute.format('m'); // 6
+const second = new Duration(100);
+second.format('s'); // 100
+
+const minute = new Duration(6000);
+minute.format('m'); // 100
 
 const hourMinute = new Duration(3660);
 hourMinute.format('h:mm'); //1:01
@@ -18,4 +21,4 @@ hourMinute.format('h:mm'); //1:01
 ||token|examples|
 |-|-|-|
 |Hour|h|1, 2, 3, ...|
-|Minute|m <br> mm|1, 2, 3, ..., 60 <br> 01, 02, 03, ..., 60|
+|Minute|m <br> mm|1, 2, 3, ...,  <br> 01, 02, 03, ..., |
