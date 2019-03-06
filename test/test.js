@@ -1,31 +1,33 @@
-const Duration = require('../dist/index').default;
+const { duration } = require('../dist/index');
 
 test('h must return floored hour', () => {
-  const duration = new Duration(3660);
-  expect(duration.format('h')).toBe('1');
+  expect(duration(3600).format('h')).toBe('1');
 })
 
 test('h must return 0 if input is less than 1 hour', () => {
-  const duration = new Duration(0);
-  expect(duration.format('h')).toBe('0');
+  expect(duration(3599).format('h')).toBe('0');
 })
 
 test('m must return floored minutes', () => {
-  const duration = new Duration(61);
-  expect(duration.format('m')).toBe('1');
+  expect(duration(61).format('m')).toBe('1');
 })
 
 test('m must return 0 if input is less than 1 minute', () => {
-  const duration = new Duration(1);
-  expect(duration.format('m')).toBe('0');
+  expect(duration(59).format('m')).toBe('0');
 })
 
 test('mm must return padded minute', () => {
-  const duration = new Duration(6000);
-  expect(duration.format('mm')).toBe('100');
+  expect(duration(6000).format('mm')).toBe('100');
 })
 
 test('h:mm must return formated hour and minute', () => {
-  const duration = new Duration(9000);
-  expect(duration.format('h:mm')).toBe('2:30');
+  expect(duration(9000).format('h:mm')).toBe('2:30');
+})
+
+test('s must return floored second', () => {
+  expect(duration(100).format('s')).toBe('100');
+})
+
+test('mm:h must return 30:2 when input is 9000 second', () =>{
+  expect(duration(9000).format('mm:h')).toBe('30:2');
 })
