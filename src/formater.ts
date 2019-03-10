@@ -1,15 +1,21 @@
 import Duration from "./duration";
+import { formatTokens } from "./formatTokens";
 
 export default class Formater {
   private _hour: number = 0;
   private _minute: number = 0;
   private _second: number = 0;
-  private _inputTokens: Array<string> | null;
+  private _inputTokens: Array<{type: string, token: string, value: number | string}>;
   private _formatTokens: {[key: string]: {type: string, func: Function, pad: number}} = {};
-  static readonly FORMAT_TOKENS: RegExp = /\*?[Hh]+|\*?m+|\*?s+|\*?ms|./g;
-  static readonly TYPE_ORDER = ['hour', 'minute', 'second', 'millisecond'];
-  constructor(private duration: Duration, private token: string) {
-    this._inputTokens = token.match(Formater.FORMAT_TOKENS);
+  static readonly FORMAT_EXPRESSION: RegExp = /\*?[Hh]+|\*?m+|\*?s+|\*?ms|./g;
+  static readonly TYPE_ORDER = ['hour', 'minute', 'second', 'millisecond', 'text'];
+  constructor(private duration: Duration, private input: string) {
+    let inputTokens = input.match(Formater.FORMAT_EXPRESSION)
+    if (inputTokens === null) throw '';
+    this._inputTokens = inputTokens.map(token => {
+      let type = formatTokens.filter(type => type.token === token);
+      return type.length === 0 ? {type: 'text', token: token, value: ''} : type[0];
+    });
     this.addFormatToken('h', 'hour', this.calcHour);
     this.addFormatToken('hh', 'hour', this.calcHour, 2);
     this.addFormatToken('m', 'minute', this.calcMin);
@@ -58,6 +64,13 @@ export default class Formater {
 
   public format(): string {
     if (this._inputTokens === null) return '';
-    return this._inputTokens.map(token => this.formatFunction(token)).join('');
+    Formater.TYPE_ORDER.map(type => {
+      this._inputTokens.map(inputToken => {
+        if (type === inputToken.type) {
+          inputToken.value = this.formatFunction(inputToken.token)
+        }
+      })
+    });
+    return this._inputTokens.map(inputToken => inputToken.value).join('');
   }
 }

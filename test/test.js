@@ -32,6 +32,6 @@ test('s must return floored second', () => {
   expect(duration(100000).format('s')).toBe('100');
 })
 
-// test('mm:h must return 30:2 when input is 9000 second', () =>{
-//   expect(duration(9000).format('mm:h')).toBe('30:2');
-// })
+test('mm:h must return 30:2 when input is 9000 second', () =>{
+  expect(duration(9000000).format('mm:h')).toBe('30:2');
+})
