@@ -4,7 +4,7 @@ export default class Duration {
   static readonly FORMAT_TOKENS: RegExp = /\*?[Hh]|\*?m+|\*?s+|./g;
   static readonly INPUT_TYPES = [
     {
-      type: 'ms',
+      type: 'S',
       millisecondValue: 1
     },
     {
@@ -22,7 +22,7 @@ export default class Duration {
   ];
   private _millisecond: number;
 
-  constructor(private _duration: number, private _unit: string = 'ms') {
+  constructor(private _duration: number, private _unit: string = 'S') {
     this._millisecond = Duration.convertToMillisecond(_duration, _unit);
   }
 

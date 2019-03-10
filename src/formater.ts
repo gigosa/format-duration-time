@@ -1,19 +1,20 @@
 import Duration from "./duration";
-import { formatTokens } from "./formatTokens";
+import FormatTokens from "./formatTokens";
 
 export default class Formater {
   private _hour: number = 0;
   private _minute: number = 0;
   private _second: number = 0;
+  private _milliSecond: number = 0;
   private _inputTokens: Array<{type: string, token: string, value: number | string}>;
   private _formatTokens: {[key: string]: {type: string, func: Function, pad: number}} = {};
-  static readonly FORMAT_EXPRESSION: RegExp = /\*?[Hh]+|\*?m+|\*?s+|\*?ms|./g;
+  static readonly FORMAT_EXPRESSION: RegExp = /\*?[Hh]+|\*?m+|\*?s+|\*?S|./g;
   static readonly TYPE_ORDER = ['hour', 'minute', 'second', 'millisecond', 'text'];
   constructor(private duration: Duration, private input: string) {
     let inputTokens = input.match(Formater.FORMAT_EXPRESSION)
     if (inputTokens === null) throw '';
     this._inputTokens = inputTokens.map(token => {
-      let type = formatTokens.filter(type => type.token === token);
+      let type = FormatTokens.formatTokens.filter(type => type.token === token);
       return type.length === 0 ? {type: 'text', token: token, value: ''} : type[0];
     });
     this.addFormatToken('h', 'hour', this.calcHour);
@@ -22,6 +23,7 @@ export default class Formater {
     this.addFormatToken('mm', 'minute', this.calcMin, 2);
     this.addFormatToken('s', 'second', this.calcSec);
     this.addFormatToken('ss', 'second', this.calcSec, 2);
+    this.addFormatToken('S', 'millisecond', this.calcMilliSec);
   }
 
   private addFormatToken(token: string, type: string, func: Function, pad: number = 0): void {
@@ -46,6 +48,12 @@ export default class Formater {
     this._second = Math.floor((this.duration.millisecond - this._hour * 3600000
       - this._minute * 60000) / 1000);
     return this._second;
+  }
+
+  private calcMilliSec = (): number => {
+    this._milliSecond = this.duration.millisecond - this._hour * 3600000
+      - this._minute * 60000 - this._second * 1000;
+    return this._milliSecond;
   }
 
   private static zeroPad(value: number, length: number): string{
