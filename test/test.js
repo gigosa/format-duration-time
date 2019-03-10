@@ -39,3 +39,7 @@ test('mm:h must return 30:2 when input is 9000 second', () =>{
 test('S returns milli second', () => {
   expect(duration(12345).format('S')).toBe('12345');
 })
+
+test('input type second', () => {
+  expect(duration(60, 's').format('m')).toBe('1');
+})
