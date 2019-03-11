@@ -1,8 +1,9 @@
 {
   "name": "format-duration-time",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Format duration to time",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
