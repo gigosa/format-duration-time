@@ -26,6 +26,10 @@ duration and format methods should be called with following arguments.
 duration(value, unit).format(template);
 ```
 Default input unit is milli second.
+To escape your token in the template you can use square brackets.
+```
+duration(1, 'h').format('m[minute]ss[second]')//60minute00second'
+```
 
 ### Avalable duration unit
 ||unit argument|
