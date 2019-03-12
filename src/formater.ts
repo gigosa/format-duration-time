@@ -8,7 +8,7 @@ export default class Formater {
   private _milliSecond: number = 0;
   private _inputTokens: Array<{type: string, token: string, value: number | string}>;
   private _formatTokens: {[key: string]: {type: string, func: Function, pad: number}} = {};
-  static readonly FORMAT_EXPRESSION: RegExp = /\*?[Hh]+|\*?m+|\*?s+|\*?S|./g;
+  static readonly FORMAT_EXPRESSION: RegExp = /\[.+?\]|\*?[Hh]+|\*?m+|\*?s+|\*?S|./g;
   static readonly TYPE_ORDER = ['hour', 'minute', 'second', 'millisecond', 'text'];
   constructor(private duration: Duration, private input: string) {
     let inputTokens = input.match(Formater.FORMAT_EXPRESSION)
@@ -67,7 +67,7 @@ export default class Formater {
     if (this._formatTokens[token] && typeof this._formatTokens[token].func === 'function') {
       return Formater.zeroPad(this._formatTokens[token].func(), this._formatTokens[token].pad);
     }
-    return token;
+    return token.replace(/^\[/,'').replace(/\]$/, '');
   }
 
   public format(): string {

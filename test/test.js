@@ -43,3 +43,7 @@ test('S returns milli second', () => {
 test('input type second', () => {
   expect(duration(60, 's').format('m')).toBe('1');
 })
+
+test('escape', () => {
+  expect(duration(1, 'h').format('m[minute]ss[second]')).toBe('60minute00second');
+})
