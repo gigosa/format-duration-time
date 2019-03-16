@@ -1,4 +1,4 @@
-const duration = require('../dist/index').default;
+const duration = require('../dist/bundle').default;
 
 test('h must return floored hour', () => {
   expect(duration(3600000).format('h')).toBe('1');
