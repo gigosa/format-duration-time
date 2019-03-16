@@ -5,3 +5,4 @@ dist/
 .eslintrc.js
 .eslintignore
 webpack.config.js
+coverage
