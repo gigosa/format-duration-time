@@ -1,6 +1,16 @@
 # format-duration-time
 This is a package to format duration, written in TypeScript.
 
+## Install
+npm
+```
+npm i format-duration-time
+```
+yarn
+```
+yarn add format-duration-time
+```
+
 ## Usage
 You can import this package to your code as below in JavaScript and TypeScript.
 
