@@ -16,12 +16,12 @@ You can import this package to your code as below in JavaScript and TypeScript.
 
 JavaScript
 ```
-const { duration } = require('path/to/format-duration-time');
+const duration = require('format-duration-time');
 ```
 or
 TypeScript
 ```
-import { duration } from 'path/to/format-duration-time';
+import duration from 'format-duration-time';
 ```
 
 The followings are some sample codes to use this package.
@@ -35,7 +35,7 @@ duration and format methods should be called with following arguments.
 ```
 duration(value, unit).format(template);
 ```
-Default input unit is milli second.
+Default input unit is milli second.<br>
 To escape your token in the template you can use square brackets.
 ```
 duration(1, 'h').format('m[minute]ss[second]')//60minute00second'
