@@ -1,6 +1,7 @@
 # format-duration-time
 This is a package to format duration, written in TypeScript.<br>
 [![Build Status](https://travis-ci.org/gigosa/format-duration-time.svg?branch=master)](https://travis-ci.org/gigosa/format-duration-time)
+[![Codecov Coverage](https://img.shields.io/codecov/c/github/gigosa/format-duration-time/master.svg?style=flat-square)](https://codecov.io/gh/gigosa/format-duration-time/)
 
 ## Install
 npm
