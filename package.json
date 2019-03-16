@@ -1,6 +1,6 @@
 {
   "name": "format-duration-time",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "This is a package to format duration.",
   "main": "./dist/bundle.js",
   "types": "./dist/index.d.ts",
