@@ -1,29 +1,31 @@
-import Formater from "./formater";
+import Formater from './formater';
 
 export default class Duration {
   static readonly FORMAT_TOKENS: RegExp = /\*?[Hh]|\*?m+|\*?s+|./g;
+
   static readonly INPUT_TYPES = [
     {
       type: 'S',
-      millisecondValue: 1
+      millisecondValue: 1,
     },
     {
       type: 's',
-      millisecondValue: 1000
+      millisecondValue: 1000,
     },
     {
       type: 'm',
-      millisecondValue: 60000
+      millisecondValue: 60000,
     },
     {
       type: 'h',
-      millisecondValue: 3600000
-    }
+      millisecondValue: 3600000,
+    },
   ];
+
   private _millisecond: number;
 
-  constructor(private _duration: number, private _unit: string = 'S') {
-    this._millisecond = Duration.convertToMillisecond(_duration, _unit);
+  constructor(private duration: number, private unit: string = 'S') {
+    this._millisecond = Duration.convertToMillisecond(duration, unit);
   }
 
   get millisecond(): number {
@@ -31,12 +33,12 @@ export default class Duration {
   }
 
   private static convertToMillisecond(value: number, type: string): number {
-    let millisecondValue = Duration.INPUT_TYPES.filter(v => v.type === type)[0].millisecondValue;
+    const { millisecondValue } = Duration.INPUT_TYPES.filter(v => v.type === type)[0];
     return value * millisecondValue;
   }
 
   public format(token: string): string {
-    let formatter =  new Formater(this, token);
+    const formatter = new Formater(this, token);
     return formatter.format();
   }
 }

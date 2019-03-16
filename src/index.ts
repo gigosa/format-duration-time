@@ -1,5 +1,5 @@
 import Duration from './duration';
 
-export function duration(duration: number, unit: string): Duration {
-  return new Duration(duration, unit);
+export default function duration(value: number, unit: string): Duration {
+  return new Duration(value, unit);
 }

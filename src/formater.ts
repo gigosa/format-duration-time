@@ -1,21 +1,30 @@
-import Duration from "./duration";
-import FormatTokens from "./formatTokens";
+// eslint-disable-next-line no-unused-vars
+import Duration from './duration';
+import FormatTokens from './formatTokens';
 
 export default class Formater {
   private _hour: number = 0;
+
   private _minute: number = 0;
+
   private _second: number = 0;
+
   private _milliSecond: number = 0;
+
   private _inputTokens: Array<{type: string, token: string, value: number | string}>;
+
   private _formatTokens: {[key: string]: {type: string, func: Function, pad: number}} = {};
+
   static readonly FORMAT_EXPRESSION: RegExp = /\[.+?\]|\*?[Hh]+|\*?m+|\*?s+|\*?S|./g;
+
   static readonly TYPE_ORDER = ['hour', 'minute', 'second', 'millisecond', 'text'];
+
   constructor(private duration: Duration, private input: string) {
-    let inputTokens = input.match(Formater.FORMAT_EXPRESSION)
-    if (inputTokens === null) throw '';
-    this._inputTokens = inputTokens.map(token => {
-      let type = FormatTokens.formatTokens.filter(type => type.token === token);
-      return type.length === 0 ? {type: 'text', token: token, value: ''} : type[0];
+    const inputTokens = input.match(Formater.FORMAT_EXPRESSION);
+    if (inputTokens === null) throw new Error('invalid token!');
+    this._inputTokens = inputTokens.map((token) => {
+      const type = FormatTokens.formatTokens.filter(types => types.token === token);
+      return type.length === 0 ? { type: 'text', token, value: '' } : type[0];
     });
     this.addFormatToken('h', 'hour', this.calcHour);
     this.addFormatToken('hh', 'hour', this.calcHour, 2);
@@ -28,10 +37,10 @@ export default class Formater {
 
   private addFormatToken(token: string, type: string, func: Function, pad: number = 0): void {
     this._formatTokens[token] = {
-      type: type,
-      func: func,
-      pad: pad
-    }
+      type,
+      func,
+      pad,
+    };
   }
 
   private calcHour = (): number => {
@@ -56,10 +65,10 @@ export default class Formater {
     return this._milliSecond;
   }
 
-  private static zeroPad(value: number, length: number): string{
+  private static zeroPad(value: number, length: number): string {
     let s = String(value);
     if (s.length >= length) return s;
-    while (s.length < length) s = '0' + s;
+    while (s.length < length) s = `0${s}`;
     return s;
   }
 
@@ -67,17 +76,18 @@ export default class Formater {
     if (this._formatTokens[token] && typeof this._formatTokens[token].func === 'function') {
       return Formater.zeroPad(this._formatTokens[token].func(), this._formatTokens[token].pad);
     }
-    return token.replace(/^\[/,'').replace(/\]$/, '');
+    return token.replace(/^\[/, '').replace(/\]$/, '');
   }
 
   public format(): string {
     if (this._inputTokens === null) return '';
-    Formater.TYPE_ORDER.map(type => {
-      this._inputTokens.map(inputToken => {
+    Formater.TYPE_ORDER.forEach((type) => {
+      this._inputTokens.forEach((inputToken) => {
         if (type === inputToken.type) {
-          inputToken.value = this.formatFunction(inputToken.token)
+          // eslint-disable-next-line no-param-reassign
+          inputToken.value = this.formatFunction(inputToken.token);
         }
-      })
+      });
     });
     return this._inputTokens.map(inputToken => inputToken.value).join('');
   }
