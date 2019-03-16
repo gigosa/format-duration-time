@@ -5,3 +5,4 @@ package-lock.json
 dist/
 .eslintrc.js
 .eslintignore
+webpack.config.js
