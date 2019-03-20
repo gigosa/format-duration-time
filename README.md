@@ -16,12 +16,6 @@ yarn add format-duration-time
 ## Usage
 You can import this package to your code as below in JavaScript and TypeScript.
 
-JavaScript
-```
-const duration = require('format-duration-time');
-```
-or
-TypeScript
 ```
 import duration from 'format-duration-time';
 ```
