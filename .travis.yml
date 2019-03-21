@@ -15,4 +15,6 @@ script:
 jobs:
   include:
     - stage: deploy
+      node_js:
+        - "lts/*"
       script: ./scripts/release.sh
