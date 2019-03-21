@@ -1,8 +1,8 @@
-node_modules/
-.vscode/
+node_modules
+.vscode
 .npmignore
-dist/
+/dist
 .eslintrc.js
 .eslintignore
 webpack.config.js
-coverage
+/coverage
