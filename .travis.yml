@@ -1,10 +1,11 @@
 language: node_js
-node_js: 
-  - "lts/*"
 stages:
   - name: test
   - name: deploy
     if: tag IS present
+
+node_js: 
+  - "lts/*"
 install:
   - npm i -g codecov
   - npm i
@@ -15,6 +16,4 @@ script:
 jobs:
   include:
     - stage: deploy
-      node_js:
-        - "lts/*"
       script: ./scripts/release.sh
