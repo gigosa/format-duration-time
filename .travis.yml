@@ -9,7 +9,7 @@ node_js:
 
 jobs:
   include:
-    - state: test
+    - stage: test
       install:
         - npm i -g codecov
         - npm i
