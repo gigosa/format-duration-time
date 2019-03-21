@@ -2,8 +2,8 @@ language: node_js
 node_js: 
   - "lts/*"
 stages:
-  - test
-  - deploy
+  - name: test
+  - name: deploy
     if: tag IS present
 install:
   - npm i -g codecov
