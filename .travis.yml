@@ -6,14 +6,17 @@ stages:
 
 node_js: 
   - "lts/*"
-install:
-  - npm i -g codecov
-  - npm i
-script:
-  - npm run lint
-  - npm test
-  - codecov
+
 jobs:
   include:
+    - state: test
+      install:
+        - npm i -g codecov
+        - npm i
+      script:
+        - npm run lint
+        - npm test
+      after_success:
+        - codecov
     - stage: deploy
       script: ./scripts/release.sh
