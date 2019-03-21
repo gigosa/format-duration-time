@@ -4,6 +4,7 @@ node_js:
 stages:
   - test
   - deploy
+    if: tag IS present
 install:
   - npm i -g codecov
   - npm i
@@ -14,5 +15,4 @@ script:
 jobs:
   include:
     - stage: deploy
-      if: tag IS present
       script: ./scripts/release.sh
