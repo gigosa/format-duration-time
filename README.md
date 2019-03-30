@@ -20,6 +20,12 @@ You can import this package to your code as below in JavaScript and TypeScript.
 import duration from 'format-duration-time';
 ```
 
+or
+
+```
+var formatDurationTime = require("format-duration-time").default
+```
+
 The followings are some sample codes to use this package.
 ```
 duration(3600000).format('h')// 1
