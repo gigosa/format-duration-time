@@ -23,7 +23,7 @@ import duration from 'format-duration-time';
 or
 
 ```
-var formatDurationTime = require("format-duration-time").default
+var duration = require("format-duration-time").default
 ```
 
 The followings are some sample codes to use this package.
