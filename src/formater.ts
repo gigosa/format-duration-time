@@ -19,7 +19,11 @@ export default class Formater {
 
   static readonly TYPE_ORDER = ['hour', 'minute', 'second', 'millisecond', 'text'];
 
-  constructor(private duration: Duration, private input: string) {
+  constructor(
+    private duration: Duration,
+    private input: string,
+    private options: any = {},
+  ) {
     const inputTokens = input.match(Formater.FORMAT_EXPRESSION);
     if (inputTokens === null) throw new Error('invalid token!');
     this._inputTokens = inputTokens.map((token) => {
@@ -65,16 +69,31 @@ export default class Formater {
     return this._milliSecond;
   }
 
-  private static zeroPad(value: number, length: number): string {
-    let s = String(value);
+  private formatValue(token: string): string {
+    let value = this._formatTokens[token].func();
+    if (this.options.digitSeparator) {
+      value = this.formatNumber(value);
+    }
+    value = Formater.zeroPad(String(value), this._formatTokens[token].pad);
+    return value;
+  }
+
+  private static zeroPad(value: string, length: number): string {
+    let s = value;
     if (s.length >= length) return s;
     while (s.length < length) s = `0${s}`;
     return s;
   }
 
+  private formatNumber(value: number): string {
+    const parts = String(value).split('.');
+    parts[0] = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, `$1${this.options.digitSeparator}`);
+    return parts.join('.');
+  }
+
   private formatFunction(token: string): string {
     if (this._formatTokens[token] && typeof this._formatTokens[token].func === 'function') {
-      return Formater.zeroPad(this._formatTokens[token].func(), this._formatTokens[token].pad);
+      return this.formatValue(token);
     }
     return token.replace(/^\[/, '').replace(/\]$/, '');
   }

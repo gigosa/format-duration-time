@@ -37,8 +37,8 @@ export default class Duration {
     return value * millisecondValue;
   }
 
-  public format(token: string): string {
-    const formatter = new Formater(this, token);
+  public format(token: string, option: any = {}): string {
+    const formatter = new Formater(this, token, option);
     return formatter.format();
   }
 }

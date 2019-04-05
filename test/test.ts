@@ -47,3 +47,7 @@ test('input type second', () => {
 test('escape', () => {
   expect(duration(1, 'h').format('m[minute]ss[second]')).toBe('60minute00second');
 })
+
+test('digit separator', () => {
+  expect(duration(1000).format('S', {digitSeparator: ','})).toBe('1,000');
+})
