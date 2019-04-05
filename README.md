@@ -31,6 +31,7 @@ The followings are some sample codes to use this package.
 duration(3600000).format('h')// 1
 duration(9000000).format('h:mm')// 2:30
 duration(60, 's').format('m')// 1
+duration(1000, 's').format('s', {digitSeparator: ','})// 1,000
 ```
 
 duration and format methods should be called with following arguments.
@@ -41,6 +42,26 @@ Default input unit is milli second.<br>
 To escape your token in the template you can use square brackets.
 ```
 duration(1, 'h').format('m[minute]ss[second]')//60minute00second'
+```
+
+## Options
+
+This is an optional parameter.<br>
+You can add following options in the format function as Object.
+```
+duration(value, unit).format(template, {options})
+```
+
+### digitSeparator
+
+```
+{ digitSeparator: string }
+```
+
+To put digit separator in every 3 digit, add digitSeparator option.<br>
+Value of digitSeparator must be string.
+```
+duration(1000, 's').format('s', {digitSeparator: ','})// 1,000
 ```
 
 ### Avalable duration unit
