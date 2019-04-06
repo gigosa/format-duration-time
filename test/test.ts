@@ -51,3 +51,7 @@ test('escape', () => {
 test('digit separator', () => {
   expect(duration(1000).format('S', {digitSeparator: ','})).toBe('1,000');
 })
+
+test('padding a lot', () => {
+  expect(duration(1000, 'S').format('SSSSSS')).toBe('001000');
+})

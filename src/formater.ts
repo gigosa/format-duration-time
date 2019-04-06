@@ -11,11 +11,11 @@ export default class Formater {
 
   private _milliSecond: number = 0;
 
-  private _inputTokens: Array<{type: string, token: string, value: number | string}>;
+  private _inputTokens: Array<{type: string, inputToken: string, value: number | string}>;
 
-  private _formatTokens: {[key: string]: {type: string, func: Function, pad: number}} = {};
+  private _formatTokens: {[key: string]: {token: string, func: Function}} = {};
 
-  static readonly FORMAT_EXPRESSION: RegExp = /\[.+?\]|\*?[Hh]+|\*?m+|\*?s+|\*?S|./g;
+  static readonly FORMAT_EXPRESSION: RegExp = /\[.+?\]|\*?[Hh]+|\*?m+|\*?s+|\*?S+|./g;
 
   static readonly TYPE_ORDER = ['hour', 'minute', 'second', 'millisecond', 'text'];
 
@@ -26,24 +26,23 @@ export default class Formater {
   ) {
     const inputTokens = input.match(Formater.FORMAT_EXPRESSION);
     if (inputTokens === null) throw new Error('invalid token!');
-    this._inputTokens = inputTokens.map((token) => {
-      const type = FormatTokens.formatTokens.filter(types => types.token === token);
-      return type.length === 0 ? { type: 'text', token, value: '' } : type[0];
+    this._inputTokens = inputTokens.map((inputToken) => {
+      const type = FormatTokens.formatTokens.filter((types) => {
+        const regexp = new RegExp(`^${types.token}+$`);
+        return regexp.exec(inputToken);
+      });
+      return type.length === 0 ? { type: 'text', inputToken, value: '' } : { type: type[0].type, inputToken, value: 0 };
     });
     this.addFormatToken('h', 'hour', this.calcHour);
-    this.addFormatToken('hh', 'hour', this.calcHour, 2);
     this.addFormatToken('m', 'minute', this.calcMin);
-    this.addFormatToken('mm', 'minute', this.calcMin, 2);
     this.addFormatToken('s', 'second', this.calcSec);
-    this.addFormatToken('ss', 'second', this.calcSec, 2);
     this.addFormatToken('S', 'millisecond', this.calcMilliSec);
   }
 
-  private addFormatToken(token: string, type: string, func: Function, pad: number = 0): void {
-    this._formatTokens[token] = {
-      type,
+  private addFormatToken(token: string, type: string, func: Function): void {
+    this._formatTokens[type] = {
+      token,
       func,
-      pad,
     };
   }
 
@@ -69,12 +68,12 @@ export default class Formater {
     return this._milliSecond;
   }
 
-  private formatValue(token: string): string {
-    let value = this._formatTokens[token].func();
+  private formatValue(type: string, token: string): string {
+    let value = this._formatTokens[type].func();
     if (this.options.digitSeparator) {
       value = this.formatNumber(value);
     }
-    value = Formater.zeroPad(String(value), this._formatTokens[token].pad);
+    value = Formater.zeroPad(String(value), token.length);
     return value;
   }
 
@@ -91,9 +90,9 @@ export default class Formater {
     return parts.join('.');
   }
 
-  private formatFunction(token: string): string {
-    if (this._formatTokens[token] && typeof this._formatTokens[token].func === 'function') {
-      return this.formatValue(token);
+  private formatFunction(type: string, token: string): string {
+    if (this._formatTokens[type] && typeof this._formatTokens[type].func === 'function') {
+      return this.formatValue(type, token);
     }
     return token.replace(/^\[/, '').replace(/\]$/, '');
   }
@@ -104,7 +103,7 @@ export default class Formater {
       this._inputTokens.forEach((inputToken) => {
         if (type === inputToken.type) {
           // eslint-disable-next-line no-param-reassign
-          inputToken.value = this.formatFunction(inputToken.token);
+          inputToken.value = this.formatFunction(inputToken.type, inputToken.inputToken);
         }
       });
     });
