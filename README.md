@@ -29,19 +29,26 @@ var duration = require("format-duration-time").default
 The followings are some sample codes to use this package.
 ```
 duration(3600000).format('h')// 1
-duration(9000000).format('h:mm')// 2:30
+duration(9000000).format('h:m')// 2:30
+duration(1, 'h').format('m[minute]ss[second]')//60minute00second
 duration(60, 's').format('m')// 1
 duration(1000, 's').format('s', {digitSeparator: ','})// 1,000
+duration(1, 'S').format('SSSS')// 0001
 ```
 
 duration and format methods should be called with following arguments.
 ```
 duration(value, unit).format(template);
 ```
+To padding zero on the head of formated duration, format function should be called by multiple token.
+```
+duration(1, 'S').format('SSSS')// 0001
+```
+
 Default input unit is milli second.<br>
 To escape your token in the template you can use square brackets.
 ```
-duration(1, 'h').format('m[minute]ss[second]')//60minute00second'
+duration(1, 'h').format('m[minute]ss[second]')//60minute00second
 ```
 
 ## Options
@@ -76,7 +83,7 @@ duration(1000, 's').format('s', {digitSeparator: ','})// 1,000
 
 ||token|examples|
 |-|-|-|
-|Hour|h <br> hh|1, 2, 3, ... <br> 01, 02, 03|
-|Minute|m <br> mm|1, 2, 3, ...  <br> 01, 02, 03, ...|
-|Second|s <br> ss|1, 2, 3, ... <br> 01, 02, 03, ...|
-|Milli second|S|1, 2, 3, ...|
+|Hour|h <br> hh <br> ...|1, 2, 3, ... <br> 01, 02, 03 ... <br> ...|
+|Minute|m <br> mm <br> ...|1, 2, 3, ...  <br> 01, 02, 03, ... <br> ...|
+|Second|s <br> ss <br> ...|1, 2, 3, ... <br> 01, 02, 03, ... <br> ...|
+|Milli second|S <br> SS <br> ...|1, 2, 3, ... <br> 01, 02, 03, ... <br> ...|
