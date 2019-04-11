@@ -35,28 +35,6 @@ export default class Formater {
     });
   }
 
-  private calcHour = (): number => {
-    this._hour = Math.floor(this.duration.millisecond / 3600000);
-    return this._hour;
-  }
-
-  private calcMin = (): number => {
-    this._minute = Math.floor((this.duration.millisecond - this._hour * 3600000) / 60000);
-    return this._minute;
-  }
-
-  private calcSec = (): number => {
-    this._second = Math.floor((this.duration.millisecond - this._hour * 3600000
-      - this._minute * 60000) / 1000);
-    return this._second;
-  }
-
-  private calcMilliSec = (): number => {
-    this._milliSecond = this.duration.millisecond - this._hour * 3600000
-      - this._minute * 60000 - this._second * 1000;
-    return this._milliSecond;
-  }
-
   private formatFunction(token: string, milliSecond: number): [string, number] {
     const firstToken = token.slice(0, 1);
     if (formatTokens[firstToken] && typeof formatTokens[firstToken].func === 'function') {
