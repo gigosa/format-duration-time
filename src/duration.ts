@@ -5,19 +5,19 @@ export default class Duration {
 
   static readonly INPUT_TYPES = [
     {
-      type: 'S',
+      unit: 'S',
       millisecondValue: 1,
     },
     {
-      type: 's',
+      unit: 's',
       millisecondValue: 1000,
     },
     {
-      type: 'm',
+      unit: 'm',
       millisecondValue: 60000,
     },
     {
-      type: 'h',
+      unit: 'h',
       millisecondValue: 3600000,
     },
   ];
@@ -25,16 +25,16 @@ export default class Duration {
   private _millisecond: number;
 
   constructor(private duration: number, private unit: string = 'S') {
-    this._millisecond = Duration.convertToMillisecond(duration, unit);
+    this._millisecond = this.convertToMillisecond();
   }
 
   get millisecond(): number {
     return this._millisecond;
   }
 
-  private static convertToMillisecond(value: number, type: string): number {
-    const { millisecondValue } = Duration.INPUT_TYPES.filter(v => v.type === type)[0];
-    return value * millisecondValue;
+  private convertToMillisecond(): number {
+    const { millisecondValue } = Duration.INPUT_TYPES.filter(v => v.unit === this.unit)[0];
+    return this.duration * millisecondValue;
   }
 
   public format(token: string, option: any = {}): string {

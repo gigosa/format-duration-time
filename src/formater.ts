@@ -1,6 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import Duration from './duration';
-import FormatTokens from './formatTokens';
+import formatTokens from './formatTokens';
+import paddingZero from './lib/paddingZero';
+import digitSeparator from './lib/digitSeparator';
 
 export default class Formater {
   private _hour: number = 0;
@@ -11,9 +13,7 @@ export default class Formater {
 
   private _milliSecond: number = 0;
 
-  private _inputTokens: Array<{type: string, inputToken: string, value: number | string}>;
-
-  private _formatTokens: {[key: string]: {token: string, func: Function}} = {};
+  private _inputTokens: Array<{type: string, token: string, value: number | string}>;
 
   static readonly FORMAT_EXPRESSION: RegExp = /\[.+?\]|\*?[Hh]+|\*?m+|\*?s+|\*?S+|./g;
 
@@ -27,23 +27,12 @@ export default class Formater {
     const inputTokens = input.match(Formater.FORMAT_EXPRESSION);
     if (inputTokens === null) throw new Error('invalid token!');
     this._inputTokens = inputTokens.map((inputToken) => {
-      const type = FormatTokens.formatTokens.filter((types) => {
-        const regexp = new RegExp(`^${types.token}+$`);
+      const matchedToken = Object.keys(formatTokens).filter((token) => {
+        const regexp = new RegExp(`^${token}+$`);
         return regexp.exec(inputToken);
-      });
-      return type.length === 0 ? { type: 'text', inputToken, value: '' } : { type: type[0].type, inputToken, value: 0 };
+      })[0];
+      return matchedToken ? { type: formatTokens[matchedToken].type, token: inputToken, value: 0 } : { type: 'text', token: inputToken, value: '' };
     });
-    this.addFormatToken('h', 'hour', this.calcHour);
-    this.addFormatToken('m', 'minute', this.calcMin);
-    this.addFormatToken('s', 'second', this.calcSec);
-    this.addFormatToken('S', 'millisecond', this.calcMilliSec);
-  }
-
-  private addFormatToken(token: string, type: string, func: Function): void {
-    this._formatTokens[type] = {
-      token,
-      func,
-    };
   }
 
   private calcHour = (): number => {
@@ -68,42 +57,28 @@ export default class Formater {
     return this._milliSecond;
   }
 
-  private formatValue(type: string, token: string): string {
-    let value = this._formatTokens[type].func();
-    if (this.options.digitSeparator) {
-      value = this.formatNumber(value);
+  private formatFunction(token: string, milliSecond: number): [string, number] {
+    const firstToken = token.slice(0, 1);
+    if (formatTokens[firstToken] && typeof formatTokens[firstToken].func === 'function') {
+      const [value, restMilliSecond] = formatTokens[firstToken].func(milliSecond);
+      let formattedValue = String(value);
+      formattedValue = paddingZero(formattedValue, token.length);
+      if (this.options.digitSeparator) {
+        formattedValue = digitSeparator(formattedValue, this.options.digitSeparator);
+      }
+      return [formattedValue, restMilliSecond];
     }
-    value = Formater.zeroPad(String(value), token.length);
-    return value;
-  }
-
-  private static zeroPad(value: string, length: number): string {
-    let s = value;
-    if (s.length >= length) return s;
-    while (s.length < length) s = `0${s}`;
-    return s;
-  }
-
-  private formatNumber(value: number): string {
-    const parts = String(value).split('.');
-    parts[0] = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, `$1${this.options.digitSeparator}`);
-    return parts.join('.');
-  }
-
-  private formatFunction(type: string, token: string): string {
-    if (this._formatTokens[type] && typeof this._formatTokens[type].func === 'function') {
-      return this.formatValue(type, token);
-    }
-    return token.replace(/^\[/, '').replace(/\]$/, '');
+    return [token.replace(/^\[/, '').replace(/\]$/, ''), milliSecond];
   }
 
   public format(): string {
     if (this._inputTokens === null) return '';
+    let milliSecond = this.duration.millisecond;
     Formater.TYPE_ORDER.forEach((type) => {
       this._inputTokens.forEach((inputToken) => {
         if (type === inputToken.type) {
           // eslint-disable-next-line no-param-reassign
-          inputToken.value = this.formatFunction(inputToken.type, inputToken.inputToken);
+          [inputToken.value, milliSecond] = this.formatFunction(inputToken.token, milliSecond);
         }
       });
     });
