@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import Duration from './duration';
 import formatTokens from './formatTokens';
 import paddingZero from './lib/paddingZero';
