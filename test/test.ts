@@ -1,7 +1,7 @@
 import duration from '../src/index';
 
 test('h must return floored hour', () => {
-  expect(duration(3600000).format('h')).toBe('1');
+  expect(duration(7199999).format('h')).toBe('1');
 })
 
 test('hour with text', () => {
@@ -54,4 +54,8 @@ test('digit separator', () => {
 
 test('padding a lot', () => {
   expect(duration(1000, 'S').format('SSSSSS')).toBe('001000');
+})
+
+test('decimal place', () => {
+  expect(duration(20, 'm').format('h', { decimalPlace: 2 })).toBe('0.33');
 })

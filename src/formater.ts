@@ -37,7 +37,7 @@ export default class Formater {
   private formatFunction(token: string, milliSecond: number): [string, number] {
     const firstToken = token.slice(0, 1);
     if (formatTokens[firstToken] && typeof formatTokens[firstToken].func === 'function') {
-      const [value, restMilliSecond] = formatTokens[firstToken].func(milliSecond);
+      const [value, restMilliSecond] = formatTokens[firstToken].func(milliSecond, this.options);
       let formattedValue = String(value);
       formattedValue = paddingZero(formattedValue, token.length);
       if (this.options.digitSeparator) {
