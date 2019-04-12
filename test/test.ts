@@ -59,3 +59,11 @@ test('padding a lot', () => {
 test('decimal place', () => {
   expect(duration(20, 'm').format('h', { decimalPlace: 2 })).toBe('0.33');
 })
+
+test('decimal place minus', () => {
+  expect(duration(900, 'm').format('hh', { decimalPlace: -1})).toBe('10');
+})
+
+test('using all options', () => {
+  expect(duration(90, 'm').format('hh', { digitSeparator: ',', decimalPlace: 3})).toBe('1.500');
+})

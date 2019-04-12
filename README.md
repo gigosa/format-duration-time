@@ -71,6 +71,16 @@ Value of digitSeparator must be string.
 duration(1000, 's').format('s', {digitSeparator: ','})// 1,000
 ```
 
+### decimalPlace
+
+```
+{ decimalPlace: number }
+```
+
+```
+duration(20, 'm').format('h', { decimalPlace: 2 })// 0.33
+```
+
 ### Avalable duration unit
 ||unit argument|
 |-|-|
