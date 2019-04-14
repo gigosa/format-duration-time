@@ -64,6 +64,14 @@ test('decimal place minus', () => {
   expect(duration(900, 'm').format('hh', { decimalPlace: -1})).toBe('10');
 })
 
+test('round type floor', () => {
+  expect(duration(59, 's').format('m', { roundType: 'floor'})).toBe('0');
+})
+
+test('round type round', () => {
+  expect(duration(30, 's').format('m', { roundType: 'round'})).toBe('1');
+})
+
 test('using all options', () => {
-  expect(duration(90, 'm').format('hh', { digitSeparator: ',', decimalPlace: 3})).toBe('1.500');
+  expect(duration(91, 'm').format('h [hour]', { digitSeparator: ',', decimalPlace: 3, roundType: 'round'})).toBe('1.517 hour');
 })

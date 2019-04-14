@@ -31,9 +31,10 @@ The followings are some sample codes to use this package.
 duration(3600000).format('h')// 1
 duration(9000000).format('h:m')// 2:30
 duration(1, 'h').format('m[minute]ss[second]')//60minute00second
-duration(60, 's').format('m')// 1
+duration(60, 's').format('mm')// 01
 duration(1000, 's').format('s', {digitSeparator: ','})// 1,000
 duration(1, 'S').format('SSSS')// 0001
+duration(90, 'm').format('h', { digitSeparator: ',', decimalPlace: 3, roundType: 'round'})//1.500
 ```
 
 duration and format methods should be called with following arguments.
@@ -77,8 +78,29 @@ duration(1000, 's').format('s', {digitSeparator: ','})// 1,000
 { decimalPlace: number }
 ```
 
+You can set number of decimal digits to display.<br>
+Value of decimalPlace must be integer.
+
 ```
 duration(20, 'm').format('h', { decimalPlace: 2 })// 0.33
+```
+
+### roundType
+
+```
+{ roundType: 'floor' or 'round' }
+```
+
+Set roundType to round the lowest value.<br>
+The default type is floor.
+
+```
+duration(30, 's').format('m', { roundType: 'round'})//1
+```
+
+**You can set multiple options like folowing example.**
+```
+duration(90, 'm').format('h', { digitSeparator: ',', decimalPlace: 3, roundType: 'round'})//1.500
 ```
 
 ### Avalable duration unit
