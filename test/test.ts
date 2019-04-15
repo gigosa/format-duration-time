@@ -72,6 +72,10 @@ test('round type round', () => {
   expect(duration(30, 's').format('m', { roundType: 'round'})).toBe('1');
 })
 
+test('using decimal with multiple template token', () => {
+  expect(duration(90, 'm').format('h:m', { decimalPlace: 3})).toBe('1:30.000');
+})
+
 test('using all options', () => {
   expect(duration(91, 'm').format('h [hour]', { digitSeparator: ',', decimalPlace: 3, roundType: 'round'})).toBe('1.517 hour');
 })

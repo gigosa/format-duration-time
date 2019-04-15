@@ -16,7 +16,7 @@ export default class Formater {
 
   static readonly FORMAT_EXPRESSION: RegExp = /\[.+?\]|\*?[Hh]+|\*?m+|\*?s+|\*?S+|./g;
 
-  static readonly TYPE_ORDER = ['hour', 'minute', 'second', 'millisecond', 'text'];
+  static readonly TYPE_ORDER = ['text', 'hour', 'minute', 'second', 'millisecond'];
 
   constructor(
     private duration: Duration,
@@ -34,10 +34,18 @@ export default class Formater {
     });
   }
 
-  private formatFunction(token: string, milliSecond: number): [string, number] {
+  private formatFunction(
+    token: string,
+    milliSecond: number,
+    isSmallest: boolean,
+  ): [string, number] {
     const firstToken = token.slice(0, 1);
     if (formatTokens[firstToken] && typeof formatTokens[firstToken].func === 'function') {
-      const [value, restMilliSecond] = formatTokens[firstToken].func(milliSecond, this.options);
+      const [value, restMilliSecond] = formatTokens[firstToken].func(
+        milliSecond,
+        this.options,
+        isSmallest,
+      );
       let formattedValue = String(value);
       formattedValue = paddingZero(formattedValue, token.length);
       if (this.options.digitSeparator) {
@@ -51,11 +59,18 @@ export default class Formater {
   public format(): string {
     if (this._inputTokens === null) return '';
     let milliSecond = this.duration.millisecond;
+    let index = 0;
     Formater.TYPE_ORDER.forEach((type) => {
       this._inputTokens.forEach((inputToken) => {
         if (type === inputToken.type) {
+          index += 1;
+          const isSmallest = index === this._inputTokens.length;
           // eslint-disable-next-line no-param-reassign
-          [inputToken.value, milliSecond] = this.formatFunction(inputToken.token, milliSecond);
+          [inputToken.value, milliSecond] = this.formatFunction(
+            inputToken.token,
+            milliSecond,
+            isSmallest,
+          );
         }
       });
     });

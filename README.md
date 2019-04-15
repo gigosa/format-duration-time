@@ -79,10 +79,11 @@ duration(1000, 's').format('s', {digitSeparator: ','})// 1,000
 ```
 
 You can set number of decimal digits to display.<br>
+decimalPlace option will work on only the smallest template token.<br>
 Value of decimalPlace must be integer.
 
 ```
-duration(20, 'm').format('h', { decimalPlace: 2 })// 0.33
+duration(90, 'm').format('h:m', { decimalPlace: 3})// 1:30.000
 ```
 
 ### roundType
