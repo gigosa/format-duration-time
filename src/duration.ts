@@ -1,8 +1,6 @@
 import Formater from './formater';
 
 export default class Duration {
-  static readonly FORMAT_TOKENS: RegExp = /\*?[Hh]|\*?m+|\*?s+|./g;
-
   static readonly INPUT_TYPES = [
     {
       unit: 'S',
@@ -19,6 +17,10 @@ export default class Duration {
     {
       unit: 'h',
       millisecondValue: 3600000,
+    },
+    {
+      unit: 'd',
+      millisecondValue: 86400000,
     },
   ];
 

@@ -1,6 +1,15 @@
 import decimal from './lib/decimal';
 
 const formatTokens: {[key: string]: {type: string, func: Function}} = {
+  d: {
+    type: 'day',
+    func: (milliSecond: number, options: any = {}, isSmallest: boolean) => {
+      const day = milliSecond / 86400000;
+      const value = isSmallest ? decimal(day, options.decimalPlace, options.roundType)
+        : Math.floor(day);
+      return [value, milliSecond - Number(value) * 86400000];
+    },
+  },
   h: {
     type: 'hour',
     func: (milliSecond: number, options: any = {}, isSmallest: boolean) => {

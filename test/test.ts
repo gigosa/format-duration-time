@@ -79,3 +79,7 @@ test('using decimal with multiple template token', () => {
 test('using all options', () => {
   expect(duration(91, 'm').format('h [hour]', { digitSeparator: ',', decimalPlace: 3, roundType: 'round'})).toBe('1.517 hour');
 })
+
+test('day', () => {
+  expect(duration(24, 'h').format('d')).toBe('1');
+})

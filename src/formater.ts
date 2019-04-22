@@ -14,9 +14,9 @@ export default class Formater {
 
   private _inputTokens: Array<{type: string, token: string, value: number | string}>;
 
-  static readonly FORMAT_EXPRESSION: RegExp = /\[.+?\]|\*?[Hh]+|\*?m+|\*?s+|\*?S+|./g;
+  static readonly FORMAT_EXPRESSION: RegExp = /\[.+?\]|\*?d+|\*?[Hh]+|\*?m+|\*?s+|\*?S+|./g;
 
-  static readonly TYPE_ORDER = ['text', 'hour', 'minute', 'second', 'millisecond'];
+  static readonly TYPE_ORDER = ['text', 'day', 'hour', 'minute', 'second', 'millisecond'];
 
   constructor(
     private duration: Duration,
