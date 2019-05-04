@@ -34,6 +34,10 @@ export default class Duration {
     return this._millisecond;
   }
 
+  set millisecond(millisecond: number) {
+    this._millisecond = millisecond;
+  }
+
   private convertToMillisecond(): number {
     const { millisecondValue } = Duration.INPUT_TYPES.filter(v => v.unit === this.unit)[0];
     return this.duration * millisecondValue;
@@ -42,5 +46,17 @@ export default class Duration {
   public format(token: string, option: any = {}): string {
     const formatter = new Formater(this, token, option);
     return formatter.format();
+  }
+
+  public add(value: number, unit: string = 'S') {
+    const addDuration = new Duration(value, unit);
+    addDuration.millisecond += this._millisecond;
+    return addDuration;
+  }
+
+  public sub(value: number, unit: string = 'S') {
+    const subDuration = new Duration(value, unit);
+    subDuration.millisecond = this._millisecond - subDuration.millisecond;
+    return subDuration;
   }
 }

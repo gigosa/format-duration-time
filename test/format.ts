@@ -81,5 +81,5 @@ test('using all options', () => {
 })
 
 test('day', () => {
-  expect(duration(24, 'h').format('d')).toBe('1');
+  expect(duration(24, 'h').format('dd')).toBe('01');
 })
