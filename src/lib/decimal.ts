@@ -1,11 +1,12 @@
 function getRoundFunction(roundType: string): Function {
   switch (roundType) {
-    case 'floor': {
-      return Math.floor;
+    case 'ceil': {
+      return Math.ceil;
     }
     case 'round': {
       return Math.round;
     }
+    case 'floor':
     default: {
       return Math.floor;
     }
