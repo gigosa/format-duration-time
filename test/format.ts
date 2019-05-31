@@ -4,6 +4,10 @@ test('h must return floored hour', () => {
   expect(duration(7199999).format('h')).toBe('1');
 })
 
+test('h with ceil rounding must return ceiled hour', () => {
+  expect(duration(7199999).format('h', { roundType: 'ceil'})).toBe('2');
+})
+
 test('hour with text', () => {
   expect(duration(3600000).format('h時間')).toBe('1時間');
 })
@@ -14,6 +18,10 @@ test('h must return 0 if input is less than 1 hour', () => {
 
 test('m must return floored minutes', () => {
   expect(duration(61000).format('m')).toBe('1');
+})
+
+test('m with ceil rounding must return ceiled minutes', () => {
+  expect(duration(61000).format('m', { roundType: 'ceil' })).toBe('2');
 })
 
 test('m must return 0 if input is less than 1 minute', () => {
@@ -29,7 +37,11 @@ test('h:mm must return formated hour and minute', () => {
 })
 
 test('s must return floored second', () => {
-  expect(duration(100000).format('s')).toBe('100');
+  expect(duration(100500).format('s')).toBe('100');
+})
+
+test('s with ceil rounding must return ceiled second', () => {
+  expect(duration(100500).format('s', { roundType: 'ceil' })).toBe('101');
 })
 
 test('mm:h must return 30:2 when input is 9000 second', () =>{
@@ -66,6 +78,10 @@ test('decimal place minus', () => {
 
 test('round type floor', () => {
   expect(duration(59, 's').format('m', { roundType: 'floor'})).toBe('0');
+})
+
+test('round type ceil', () => {
+  expect(duration(59, 's').format('m', { roundType: 'ceil'})).toBe('1');
 })
 
 test('round type round', () => {

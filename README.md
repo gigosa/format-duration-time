@@ -121,7 +121,7 @@ duration(90, 'm').format('h:m', { decimalPlace: 3})// 1:30.000
 ### roundType
 
 ```
-{ roundType: 'floor' or 'round' }
+{ roundType: 'floor', 'ceil' or 'round' }
 ```
 
 Set roundType to round the lowest value.<br>
