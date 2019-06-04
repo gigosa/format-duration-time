@@ -3,7 +3,7 @@ import formatTokens from './formatTokens';
 import paddingZero from './lib/paddingZero';
 import digitSeparator from './lib/digitSeparator';
 
-export default class Formater {
+export default class Formatter {
   private _hour: number = 0;
 
   private _minute: number = 0;
@@ -23,7 +23,7 @@ export default class Formater {
     private input: string,
     private options: any = {},
   ) {
-    const inputTokens = input.match(Formater.FORMAT_EXPRESSION);
+    const inputTokens = input.match(Formatter.FORMAT_EXPRESSION);
     if (inputTokens === null) throw new Error('invalid token!');
     this._inputTokens = inputTokens.map((inputToken) => {
       const matchedToken = Object.keys(formatTokens).filter((token) => {
@@ -60,7 +60,7 @@ export default class Formater {
     if (this._inputTokens === null) return '';
     let milliSecond = this.duration.millisecond;
     let index = 0;
-    Formater.TYPE_ORDER.forEach((type) => {
+    Formatter.TYPE_ORDER.forEach((type) => {
       this._inputTokens.forEach((inputToken) => {
         if (type === inputToken.type) {
           index += 1;
