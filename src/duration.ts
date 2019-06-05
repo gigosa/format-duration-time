@@ -1,4 +1,4 @@
-import Formater from './formater';
+import Formatter from './formatter';
 
 export default class Duration {
   static readonly INPUT_TYPES = [
@@ -44,7 +44,7 @@ export default class Duration {
   }
 
   public format(token: string, option: any = {}): string {
-    const formatter = new Formater(this, token, option);
+    const formatter = new Formatter(this, token, option);
     return formatter.format();
   }
 
